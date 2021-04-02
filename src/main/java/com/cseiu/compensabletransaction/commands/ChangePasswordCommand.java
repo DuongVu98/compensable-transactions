@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class ChangePasswordCommand extends BaseCommand {
+public class ChangePasswordCommand extends BaseCommand implements Command {
     private String currentPassword;
     private String newPassword;
 

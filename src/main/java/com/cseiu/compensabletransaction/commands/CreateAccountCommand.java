@@ -1,10 +1,12 @@
 package com.cseiu.compensabletransaction.commands;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-public class CreateAccountCommand extends BaseCommand {
+public class CreateAccountCommand extends BaseCommand implements Command {
     private String username;
     private String password;
 

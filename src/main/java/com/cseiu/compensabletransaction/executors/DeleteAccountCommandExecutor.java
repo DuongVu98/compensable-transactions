@@ -1,28 +1,29 @@
 package com.cseiu.compensabletransaction.executors;
 
+import com.cseiu.compensabletransaction.commands.Command;
 import com.cseiu.compensabletransaction.commands.DeleteAccountCommand;
-import com.cseiu.compensabletransaction.compensable.Compensable;
-import com.cseiu.compensabletransaction.events.AccountDeletedEvent;
 import com.cseiu.compensabletransaction.models.Account;
 import com.cseiu.compensabletransaction.repositories.AccountRepository;
 import lombok.Builder;
 
 import java.util.Optional;
 
-@Builder
-public class DeleteAccountCommandExecutor implements CommandExecutor<DeleteAccountCommand>, Compensable<AccountDeletedEvent> {
+
+public class DeleteAccountCommandExecutor extends AbstractCommandExecutor {
     private final AccountRepository accountRepository;
 
-    @Override
-    public void execute(DeleteAccountCommand command) {
-        Optional<Account> currentAccountOptional = accountRepository.findById(command.getAggregateId());
-        if (currentAccountOptional.isPresent()) {
-            accountRepository.deleteById(command.getAggregateId());
-        }
+    @Builder
+    public DeleteAccountCommandExecutor(Command command, AccountRepository accountRepository) {
+        super(command);
+        this.accountRepository = accountRepository;
     }
 
     @Override
-    public void reverse(AccountDeletedEvent event) {
-
+    public void execute() {
+        DeleteAccountCommand deleteAccountCommand = (DeleteAccountCommand) command;
+        Optional<Account> currentAccountOptional = accountRepository.findById(deleteAccountCommand.getAggregateId());
+        if (currentAccountOptional.isPresent()) {
+            accountRepository.deleteById(deleteAccountCommand.getAggregateId());
+        }
     }
 }

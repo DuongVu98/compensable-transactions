@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class UpdateAccountCommand extends BaseCommand {
+public class UpdateAccountCommand extends BaseCommand implements Command {
     private String username;
     private String email;
 

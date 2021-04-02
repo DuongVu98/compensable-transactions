@@ -1,10 +1,10 @@
 package com.cseiu.compensabletransaction.commands;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
+
 
 @Getter
-@Builder
+@AllArgsConstructor
 public class BaseCommand {
-    private String aggregateId;
+    protected String aggregateId;
 }

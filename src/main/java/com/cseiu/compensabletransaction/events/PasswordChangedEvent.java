@@ -1,20 +1,21 @@
 package com.cseiu.compensabletransaction.events;
 
 import com.cseiu.compensabletransaction.commands.ChangePasswordCommand;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
-public class PasswordChangedEvent extends DomainEvent<ChangePasswordCommand> {
+@ToString
+public class PasswordChangedEvent extends DomainEvent {
 
-    public PasswordChangedEvent(ChangePasswordCommand command) {
-        super(command);
-    }
+    private String currentPassword;
+    private String newPassword;
 
-    public String getCurrentPassword() {
-        return this.command.getCurrentPassword();
-    }
-
-    public String getNewPassword() {
-        return this.command.getNewPassword();
+    @Builder
+    public PasswordChangedEvent(String accountId, String currentPassword, String newPassword) {
+        super(accountId);
+        this.currentPassword = currentPassword;
+        this.newPassword = newPassword;
     }
 }

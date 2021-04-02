@@ -1,11 +1,16 @@
 package com.cseiu.compensabletransaction.events;
 
 import com.cseiu.compensabletransaction.commands.DeleteAccountCommand;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
-public class AccountDeletedEvent extends DomainEvent<DeleteAccountCommand> {
-    public AccountDeletedEvent(DeleteAccountCommand command) {
-        super(command);
+@ToString
+public class AccountDeletedEvent extends DomainEvent {
+
+    @Builder
+    public AccountDeletedEvent(String accountId) {
+        super(accountId);
     }
 }
