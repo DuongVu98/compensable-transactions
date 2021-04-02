@@ -1,8 +1,11 @@
 package com.cseiu.compensabletransaction;
 
-import com.cseiu.compensabletransaction.handlers.AnotherEventHandler;
-import com.google.common.eventbus.EventBus;
+import com.cseiu.compensabletransaction.usecases.bus.DomainEventBus;
+import com.cseiu.compensabletransaction.usecases.handlers.AnotherEventHandler;
+
+import com.cseiu.compensabletransaction.usecases.handlers.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,10 +14,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CompensableTransactionApplication implements CommandLineRunner {
 
 	@Autowired
-	private EventBus eventBus;
+	@Qualifier("google-event-bus")
+	private DomainEventBus domainEventBus1;
+
+	@Autowired
+	@Qualifier("reactive-event-bus")
+	private DomainEventBus domainEventBus2;
 
 	@Autowired
 	private AnotherEventHandler anotherEventHandler;
+
+	@Autowired
+	private EventHandler eventHandler;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CompensableTransactionApplication.class, args);
@@ -22,6 +33,7 @@ public class CompensableTransactionApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		eventBus.register(anotherEventHandler);
+		domainEventBus1.register(anotherEventHandler);
+		domainEventBus2.register(eventHandler);
 	}
 }
