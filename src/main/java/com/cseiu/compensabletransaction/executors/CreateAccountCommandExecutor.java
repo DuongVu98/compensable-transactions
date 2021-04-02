@@ -7,6 +7,7 @@ import com.cseiu.compensabletransaction.models.Account;
 import com.cseiu.compensabletransaction.repositories.AccountRepository;
 import lombok.Builder;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 public class CreateAccountCommandExecutor extends AbstractCommandExecutor implements Compensable {
@@ -20,8 +21,9 @@ public class CreateAccountCommandExecutor extends AbstractCommandExecutor implem
     }
 
     @Override
+    @Transactional
     public void execute() {
-        CreateAccountCommand createAccountCommand = (CreateAccountCommand) command;
+        CreateAccountCommand createAccountCommand = (CreateAccountCommand) getCommandDetail();
         Account newAccount = Account.builder()
                 .username(createAccountCommand.getUsername())
                 .password(createAccountCommand.getPassword())
@@ -32,7 +34,7 @@ public class CreateAccountCommandExecutor extends AbstractCommandExecutor implem
 
     @Override
     public void reverse() throws Exception {
-        CreateAccountCommand createAccountCommand = (CreateAccountCommand) command;
+        CreateAccountCommand createAccountCommand = (CreateAccountCommand) getCommandDetail();
         Optional<Account> currentAccountOptional = accountRepository.findById(createAccountCommand.getAggregateId());
 
         if (currentAccountOptional.isPresent()) {

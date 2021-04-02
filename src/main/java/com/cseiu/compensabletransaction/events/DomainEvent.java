@@ -2,9 +2,11 @@ package com.cseiu.compensabletransaction.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 @AllArgsConstructor
 public class DomainEvent {
-    private String accountId;
+    protected String accountId;
 }

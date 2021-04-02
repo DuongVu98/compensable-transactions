@@ -6,6 +6,7 @@ import com.cseiu.compensabletransaction.models.Account;
 import com.cseiu.compensabletransaction.repositories.AccountRepository;
 import lombok.Builder;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 public class UpdateAccountCommandExecutor extends AbstractCommandExecutor {
@@ -19,8 +20,9 @@ public class UpdateAccountCommandExecutor extends AbstractCommandExecutor {
     }
 
     @Override
+    @Transactional
     public void execute() {
-        UpdateAccountCommand updateAccountCommand = (UpdateAccountCommand) command;
+        UpdateAccountCommand updateAccountCommand = (UpdateAccountCommand) getCommandDetail();
         Optional<Account> currentAccountOptional = accountRepository.findById(updateAccountCommand.getAggregateId());
         if (currentAccountOptional.isPresent()) {
             Account currentAccount = currentAccountOptional.get();

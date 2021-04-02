@@ -6,6 +6,7 @@ import com.cseiu.compensabletransaction.models.Account;
 import com.cseiu.compensabletransaction.repositories.AccountRepository;
 import lombok.Builder;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 public class ChangePasswordCommandExecutor extends AbstractCommandExecutor {
@@ -18,8 +19,9 @@ public class ChangePasswordCommandExecutor extends AbstractCommandExecutor {
     }
 
     @Override
+    @Transactional
     public void execute() {
-        ChangePasswordCommand changePasswordCommand = (ChangePasswordCommand) command;
+        ChangePasswordCommand changePasswordCommand = (ChangePasswordCommand) getCommandDetail();
         Optional<Account> currentAccountOptional = accountRepository.findById(changePasswordCommand.getAggregateId());
         if (currentAccountOptional.isPresent()) {
             Account currentAccount = currentAccountOptional.get();

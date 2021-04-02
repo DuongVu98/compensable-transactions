@@ -1,6 +1,7 @@
 package com.cseiu.compensabletransaction.decorators;
 
 import com.cseiu.compensabletransaction.commands.BaseCommand;
+import com.cseiu.compensabletransaction.commands.Command;
 import com.cseiu.compensabletransaction.executors.AbstractCommandExecutor;
 import com.cseiu.compensabletransaction.executors.CommandExecutor;
 import com.cseiu.compensabletransaction.models.Account;
@@ -8,6 +9,7 @@ import com.cseiu.compensabletransaction.repositories.AccountRepository;
 import com.cseiu.compensabletransaction.services.AggregateBackupService;
 import lombok.Builder;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 public class AggregateBackupDecorator extends CommandExecutorDecorator{
@@ -23,8 +25,14 @@ public class AggregateBackupDecorator extends CommandExecutorDecorator{
     }
 
     @Override
+    public Command getCommandDetail() {
+        return commandExecutor.getCommandDetail();
+    }
+
+    @Override
+    @Transactional
     public void execute() {
-        BaseCommand command = (BaseCommand) ((AbstractCommandExecutor) commandExecutor).getCommand();
+        BaseCommand command = (BaseCommand) getCommandDetail();
         backupAggregate(command.getAggregateId());
         commandExecutor.execute();
     }

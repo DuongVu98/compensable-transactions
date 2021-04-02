@@ -9,6 +9,7 @@ import com.cseiu.compensabletransaction.repositories.AccountRepository;
 import com.cseiu.compensabletransaction.services.AggregateBackupService;
 import lombok.Builder;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 
@@ -24,8 +25,9 @@ public class DeleteAccountCommandExecutor extends AbstractCommandExecutor implem
     }
 
     @Override
+    @Transactional
     public void execute() {
-        DeleteAccountCommand deleteAccountCommand = (DeleteAccountCommand) command;
+        DeleteAccountCommand deleteAccountCommand = (DeleteAccountCommand) getCommandDetail();
         Optional<Account> currentAccountOptional = accountRepository.findById(deleteAccountCommand.getAggregateId());
         if (currentAccountOptional.isPresent()) {
             accountRepository.deleteById(deleteAccountCommand.getAggregateId());
@@ -34,7 +36,7 @@ public class DeleteAccountCommandExecutor extends AbstractCommandExecutor implem
 
     @Override
     public void reverse() {
-        BaseCommand command = (BaseCommand) this.getCommand();
+        BaseCommand command = (BaseCommand) getCommandDetail();
         Account backupAccount = aggregateBackupService.getAccount(command.getAggregateId());
         accountRepository.save(backupAccount);
         aggregateBackupService.remove(backupAccount);

@@ -1,14 +1,17 @@
 package com.cseiu.compensabletransaction.executors;
 
 import com.cseiu.compensabletransaction.commands.Command;
-import lombok.Getter;
 
 public abstract class AbstractCommandExecutor implements CommandExecutor {
 
-    @Getter
-    protected Command command;
+    private Command command;
 
     public AbstractCommandExecutor(Command command) {
         this.command = command;
+    }
+
+    @Override
+    public Command getCommandDetail() {
+        return this.command;
     }
 }
