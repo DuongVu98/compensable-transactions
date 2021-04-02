@@ -11,4 +11,5 @@ public class AppConfig {
     public EventBus eventBus() {
         return new EventBus();
     }
+
 }

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class CreateUserForm {
-    private String username;
-    private String password;
+public class ChangePasswordForm {
+    private String currentPassword;
+    private String newPassword;
 }

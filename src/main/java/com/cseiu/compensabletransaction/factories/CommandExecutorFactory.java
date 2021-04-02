@@ -3,16 +3,19 @@ package com.cseiu.compensabletransaction.factories;
 import com.cseiu.compensabletransaction.commands.*;
 import com.cseiu.compensabletransaction.executors.*;
 import com.cseiu.compensabletransaction.repositories.AccountRepository;
+import com.cseiu.compensabletransaction.services.AggregateBackupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CommandExecutorFactory {
     private final AccountRepository accountRepository;
+    private final AggregateBackupService aggregateBackupService;
 
     @Autowired
-    public CommandExecutorFactory(AccountRepository accountRepository) {
+    public CommandExecutorFactory(AccountRepository accountRepository, AggregateBackupService aggregateBackupService) {
         this.accountRepository = accountRepository;
+        this.aggregateBackupService = aggregateBackupService;
     }
 
 
@@ -55,6 +58,7 @@ public class CommandExecutorFactory {
         return DeleteAccountCommandExecutor.builder()
                 .command(command)
                 .accountRepository(this.accountRepository)
+                .aggregateBackupService(this.aggregateBackupService)
                 .build();
     }
 }
